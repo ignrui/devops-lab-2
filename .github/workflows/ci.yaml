@@ -37,10 +37,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests
+      - name: Run tests (non-Windows)
+        if: runner.os != 'Windows'
+        shell: bash
         run: |
           set -o pipefail
           pytest --maxfail=1 --disable-warnings -q --junitxml=test-results.xml | tee test-results.txt
+
+      - name: Run tests (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          pytest --maxfail=1 --disable-warnings -q --junitxml=test-results.xml | Tee-Object -FilePath test-results.txt
 
     
       - name: Upload test results
