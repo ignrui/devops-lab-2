@@ -27,6 +27,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Print Environment
+        run: echo "Running in ${{ github.event.inputs.environment }}"
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
